@@ -683,7 +683,8 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
         CGSize prevSize = _swipeView.bounds.size;
         _swipeOverlay.frame = CGRectMake(0, 0, self.bounds.size.width, self.contentView.bounds.size.height);
         [self fixRegionAndAccesoryViews];
-        if (_swipeView.image &&  !CGSizeEqualToSize(prevSize, _swipeOverlay.bounds.size)) {
+        BOOL sizesAreEqual = fabs(prevSize.height - _swipeOverlay.bounds.size.height) < FLT_EPSILON && fabs(prevSize.width - _swipeOverlay.bounds.size.width) < FLT_EPSILON;
+        if (_swipeView.image && !sizesAreEqual) {
             //refresh contentView in situations like layout change, orientation chage, table resize, etc.
             [self refreshContentView];
         }
@@ -897,12 +898,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 
 - (UIImage *)imageFromView:(UIView *)view {
     UIGraphicsBeginImageContextWithOptions(view.bounds.size, NO, [[UIScreen mainScreen] scale]);
-    if(floor(NSFoundationVersionNumber) >= NSFoundationVersionNumber_iOS_7_0) {
-        // on iOS 7+ we can use:
-        [view drawViewHierarchyInRect:view.bounds afterScreenUpdates:NO];
-    } else {
-        [view.layer renderInContext:UIGraphicsGetCurrentContext()];
-    }
+    [view.layer renderInContext:UIGraphicsGetCurrentContext()];
     UIImage * image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return image;
