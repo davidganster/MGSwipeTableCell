@@ -899,7 +899,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     UIGraphicsBeginImageContextWithOptions(view.bounds.size, NO, [[UIScreen mainScreen] scale]);
     if(floor(NSFoundationVersionNumber) >= NSFoundationVersionNumber_iOS_7_0) {
         // on iOS 7+ we can use:
-        [view drawViewHierarchyInRect:view.bounds afterScreenUpdates:YES];
+        [view drawViewHierarchyInRect:view.bounds afterScreenUpdates:NO];
     } else {
         [view.layer renderInContext:UIGraphicsGetCurrentContext()];
     }
@@ -1042,7 +1042,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
             [self updateState:i ? MGSwipeStateExpandingRightToLeft : MGSwipeStateExpandingLeftToRight];
         }
         else {
-            [view endExpansionAnimated:YES];
+            [view endExpansionAnimated:NO];
             _activeExpansion = nil;
             CGFloat t = MIN(1.0f, offset/view.bounds.size.width);
             [view transition:settings[i].transition percent:t];
@@ -1144,7 +1144,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
         _animationCompletion = nil;
         callbackCopy(NO);
     }
-    if (offset !=0) {
+    if (offset != 0) {
         [self createSwipeViewIfNeeded];
     }
     
